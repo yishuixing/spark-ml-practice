@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":util")
+    compile group: 'org.scalanlp', name: 'nak_2.11', version: '1.3'
+}

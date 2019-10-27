@@ -1,3 +1,4 @@
+import anjun.spark.ml.practice.util.FileUtils
 import breeze.linalg.DenseMatrix
 import nak.cluster.DBSCAN._
 import nak.cluster.GDBSCAN
@@ -19,10 +20,12 @@ case class CheckIn(user: String, time: DateTime, latitude: Double, longitude: Do
 
 object GeolocatedCluster {
     def main(args: Array[String]){
+
     Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
 
-      //2rd_data/ch02/Gowalla_totalCheckins.txt output/ch04/dbscan local[2]
+      // data/ch4/loc-Gowalla_totalCheckins.txt output/ch4/dbscan "local[*]"
       val Array(input,output,mode) = args
+      FileUtils.dirDel(output)
       val conf = new SparkConf().setAppName(this.getClass.getSimpleName).setMaster(mode)
       val sc = new SparkContext(conf)
 
@@ -56,7 +59,7 @@ object GeolocatedCluster {
           //println((id, points))
       }
     }
-    //clustersRDD.coalesce(1).saveAsTextFile(output)
+    clustersRDD.coalesce(1).saveAsTextFile(output)
     sc.stop()
   }
 

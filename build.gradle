@@ -1,0 +1,23 @@
+buildscript{
+    repositories {
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+    }
+}
+allprojects {
+    group 'anjun'
+    version '1.0'
+//    apply plugin: 'idea'
+}
+subprojects {
+    apply plugin: 'scala'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    [compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+    repositories {
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+    }
+    dependencies {
+        compile "org.apache.spark:spark-mllib_2.11:2.4.4"
+        compile 'org.scala-lang:scala-library:2.11.12'
+    }
+}

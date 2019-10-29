@@ -1,3 +1,4 @@
+import anjun.spark.ml.practice.util.FileUtils
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.mllib.fpm.FPGrowth
 import org.apache.spark.{SparkConf, SparkContext}
@@ -11,15 +12,16 @@ object MoviesFP {
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
 
-    //spark-warehouse 2rd_data/ch06/ar/part-00000 output/ch06/model local[2]
+    // workdir data/ch6/ratingrdd.dat output/ch6/model "local[*]"
     val Array(whdir,input,output,mode) = args
+    FileUtils.dirDel(output)
     val conf = new SparkConf()
       .setAppName(this.getClass.getSimpleName)
       .set("spark.sql.warehouse.dir",whdir)
       .setMaster(mode)
     val sc = new SparkContext(conf)
 
-    val transactions = sc.textFile(input).map(_.split("\t")).map(_(1).split(","))
+    val transactions = sc.textFile(input).map(_.split(" ")).map(_(1).split(","))
     val minSupport = 0.005
     val minConfidence = 0.1
 

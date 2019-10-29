@@ -10,7 +10,7 @@ object ExploreModel {
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
 
-    //spark-warehouse 2rd_data/ch06/model 2rd_data/ch06/movies.txt local[2]
+    // workdir output/ch6/model data/ch6/movies.txt "local[*]"
     val Array(whdir, modelPath, moviePath, mode) = args
     val conf = new SparkConf()
       .set("spark.sql.warehouse.dir",whdir)
@@ -22,7 +22,7 @@ object ExploreModel {
     val movies = sc.textFile(moviePath).map(_.split(",")).map{
       case terms =>  (terms(0), "%s_%s".format(terms(1), terms(2)))
     }.collect().toMap
-
+    movies.foreach(println)
     // 2-item sets
     val userCnt = 222329
     val supports = model.freqItemsets.filter(_.items.length <= 2).collect()
@@ -43,6 +43,9 @@ object ExploreModel {
           (left, right, Seq(support, confidence, support / leftS / rightS))
     }.map {
       case (left, right, indicators) =>
+        println(left)
+        println(right)
+        println(indicators)
         (moviesBC.value.get(left).get, moviesBC.value.get(right).get, indicators.map(x => "%.4f".format(x)))
     }
 

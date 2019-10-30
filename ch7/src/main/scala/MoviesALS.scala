@@ -14,7 +14,7 @@ object MoviesALS {
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
 
-    //spark-warehouse 2rd_data/ch07/ratings.dat output/ch07/model local[2]
+    // workdir data/ch7/ratings.dat output/ch7/model "local[*]"
     val Array(whdir, ratingsPath, output, mode) = args
     val spark = SparkSession.builder
       .config("spark.sql.warehouse.dir", whdir)

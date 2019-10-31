@@ -11,8 +11,7 @@ object MoviesALSBatch {
 
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org.apache.spark").setLevel(Level.WARN)
-
-    //spark-warehouse 2rd_data/ch07/ratings.dat output/ch07/modelBest local[2]
+    //workdir data/ch7/ratings.dat output/ch7/modelBest "local[*]"
     val Array(whdir, ratingsPath, output, mode) = args
     val spark = SparkSession.builder
       .config("spark.sql.warehouse.dir", whdir)
@@ -85,7 +84,7 @@ object MoviesALSBatch {
     rmse
   }
 
-  def computeBaseline( data: DataFrame, test: DataFrame, numTest:Long) : Double ={
+  def computeBaseline(data: DataFrame, test: DataFrame, numTest: Long): Double = {
     val spark = data.sparkSession
     import spark.implicits._
     data.createTempView("training")
